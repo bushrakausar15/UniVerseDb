@@ -125,6 +125,7 @@ export class VendorSignUpComponent implements OnInit {
           }
           else {
             alert("error")
+            window.location.reload();
           }
         
         })
@@ -135,6 +136,10 @@ export class VendorSignUpComponent implements OnInit {
           if(res.message=="data saved")
           {
             alert("user updated");
+            window.location.reload();
+          }
+          else{
+            alert("error")
             window.location.reload();
           }
         })
