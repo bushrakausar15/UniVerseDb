@@ -1,7 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: hidden; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 body{
-    background-color: #ebebeb;
+    background-image: url(./assets/img-extended-1.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    /* height:205px; */
+    /* height: 100%; */
+    /* filter: blur(3px); */
+}
+body button{
+    outline: none;
+}
+@media (max-width : 800px)
+{
+    #img{
+            
+            width: 100%;
+    }
 }
