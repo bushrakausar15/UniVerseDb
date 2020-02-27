@@ -117,8 +117,8 @@ export class VendorSignUpComponent implements OnInit {
       this.saveData.vendorDetail(vendorDetail.value, items.value, vendorId)
         .subscribe((res: any) => {
           
-          if (res.message == "data saved") {
-            alert("Vendor Number Created- " + vendorId);
+          if (res.status == 200) {
+            alert(res.message +" "  + vendorId);
             window.location.reload();
 
           }
@@ -132,9 +132,9 @@ export class VendorSignUpComponent implements OnInit {
       else{
         this.saveData.vendorUpdate(vendorDetail.value,items.value,this.vendorId)
         .subscribe((res:any)=>{
-          if(res.message=="data saved")
+          if(res.status==200)
           {
-            alert("user updated");
+            alert(res.message);
             window.location.reload();
           }
           else{

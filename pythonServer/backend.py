@@ -173,6 +173,7 @@ def getAllOrders():
     itemOrderDataXML = u2py.run("LIST DATA PO.ORDER.MST ORDER.DATE VEND.NAME TOXML",capture=True)
     xmldata = itemOrderDataXML.strip()
     itemOrderDict = xmltodict.parse(xmldata)['ROOT']['PO.ORDER.MST']
+    print(itemOrderDict)
     if type(itemOrderDict) is list:
         for item in itemOrderDict:
             tempDict = {}
