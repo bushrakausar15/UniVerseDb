@@ -3,6 +3,8 @@ import { SaveDataService } from '../service/vendor.service';
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { generate } from 'rxjs';
 import { Router } from '@angular/router';
+import { PurchaseDialogBoxComponent } from '../purchase-order/purchase-dialog-box.component'
+import { MatDialog } from '@angular/material/dialog'
 @Component({
   selector: 'app-vendor-sign-up',
   templateUrl: './vendor-sign-up.component.html',
@@ -10,11 +12,12 @@ import { Router } from '@angular/router';
 })
 export class VendorSignUpComponent implements OnInit {
   items: FormGroup;
-  constructor(private saveData: SaveDataService, private fb: FormBuilder, private router: Router) { }
+  constructor(private saveData: SaveDataService, private fb: FormBuilder, private router: Router, private dialog : MatDialog) { }
   private recordData: any;
   private recordIds: any;
   private itemArray: Array<any> = [];
   itemError : boolean
+  lastid:number;
   vendorNumberHeader : number;
   sno: number = 1;
   recordId: Array<any> = [];
@@ -40,13 +43,15 @@ export class VendorSignUpComponent implements OnInit {
     this.itemArray.splice(index, 1);
   }
   setVendorId(event){
-    if(event.keyCode===13){
+    if(event.keyCode===13 && this.lastid!=this.vendorDetailForm.get('vendorNo').value){
       this.vendorId=this.vendorDetailForm.get('vendorNo').value
+      this.lastid=this.vendorId
       console.log(this.vendorId)
       this.saveData.particularVendor(this.vendorId)
         .subscribe((res: any) => {
           if(res.status === 404){
-            alert(res.msg)
+            // alert(res.msg)
+            this.openDialogBox(res.msg)
           }
             
           else{
@@ -129,14 +134,15 @@ export class VendorSignUpComponent implements OnInit {
       this.saveData.vendorDetail(vendorDetail.value, items.value, vendorId)
         .subscribe((res: any) => {
           
-          if (res.status == 200) {    
-            alert(res.message +" "  + vendorId);
-            window.location.reload();
+          if (res.status == 200) {
+            // alert("Vendor Number Created- " + vendorId);
+            this.openDialogBox("Vendor Created !. Vendor No. -" + vendorId)
+            // window.location.reload();
 
           }
           else {
-            alert("error")
-            window.location.reload();
+            // alert("error")
+            this.openDialogBox("error")
           }
         
         })
@@ -145,13 +151,10 @@ export class VendorSignUpComponent implements OnInit {
         this.saveData.vendorUpdate(vendorDetail.value,items.value,this.vendorId)
         .subscribe((res:any)=>{
           if(res.status==200)
-          { 
-            alert(res.message);
-            window.location.reload();
-          }
-          else{
-            alert("error")
-            window.location.reload();
+          {
+            // alert("user updated");
+            this.openDialogBox("User Updated !")
+            // window.location.reload();
           }
         })
       }
@@ -165,5 +168,12 @@ export class VendorSignUpComponent implements OnInit {
   }
   checkForPhone(event) {
     return event.keyCode == 69 || event.keyCode == 190 || event.keyCode == 107 || (event.keyCode >=65 && event.keyCode <=90)  ? false : true
+  }
+    
+  openDialogBox(msg){
+    this.dialog.open(PurchaseDialogBoxComponent,{
+      width: '250px',
+      data:{msg: msg}
+    })
   }
 }
