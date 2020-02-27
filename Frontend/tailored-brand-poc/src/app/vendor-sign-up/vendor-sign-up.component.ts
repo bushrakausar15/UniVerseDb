@@ -14,6 +14,8 @@ export class VendorSignUpComponent implements OnInit {
   private recordData: any;
   private recordIds: any;
   private itemArray: Array<any> = [];
+  itemError : boolean
+  vendorNumberHeader : number;
   sno: number = 1;
   recordId: Array<any> = [];
   toggle: boolean = false;
@@ -46,7 +48,10 @@ export class VendorSignUpComponent implements OnInit {
           if(res.status === 404){
             alert(res.msg)
           }
+            
           else{
+            console.log(res)
+            this.heading=`Edit Vendor ${this.vendorId}`;
             this.setItemdOrderDetails(res)
           }
           
@@ -62,7 +67,7 @@ export class VendorSignUpComponent implements OnInit {
 
     this.items = this.fb.group({
       itemId: new FormControl('', [Validators.required]),
-      items: this.fb.array([])
+      items: this.fb.array([],[Validators.required])
     });
     this.editVendor = this.router.url.endsWith('/vendor/edit')
     console.log(this.editVendor)
@@ -92,6 +97,7 @@ export class VendorSignUpComponent implements OnInit {
       console.log(id)
       
     }
+    console.log(this.items.controls['itemId'])
 
   }
   createFormControl(id,desc){
@@ -105,19 +111,25 @@ export class VendorSignUpComponent implements OnInit {
     let controlArray = this.items.get('items').value
     let status = controlArray.find(element => element.items === id)
     if (status === undefined) {
+      this.itemError = false
       let control = <FormArray>this.items.controls['items']
       control.push(this.initiateForm(description, id))
     }
   }
   vendorDetail(vendorDetail, items) {
     this.toggle = true;
+
+    if(this.items.untouched){
+      this.itemError = true
+      return
+    }
     if (this.vendorDetailForm.valid) {
       if(!this.editVendor){
         let vendorId = Math.floor(Math.random() * 900000) + 100000
       this.saveData.vendorDetail(vendorDetail.value, items.value, vendorId)
         .subscribe((res: any) => {
           
-          if (res.status == 200) {
+          if (res.status == 200) {    
             alert(res.message +" "  + vendorId);
             window.location.reload();
 
@@ -133,7 +145,7 @@ export class VendorSignUpComponent implements OnInit {
         this.saveData.vendorUpdate(vendorDetail.value,items.value,this.vendorId)
         .subscribe((res:any)=>{
           if(res.status==200)
-          {
+          { 
             alert(res.message);
             window.location.reload();
           }

@@ -9,7 +9,7 @@
       <div class="form-head">
         <div class="form-head-left">
           <label class="items-left">Vendor No.</label>
-          <input type="text"  class="vendor-name" placeholder="New Vendor" (keydown)="setVendorId($event)" formControlName='vendorNo' style="text-align: right;" />
+          <input type="text"  class="vendor-name" placeholder="Vendor No" (keydown)="setVendorId($event)" formControlName='vendorNo' style="text-align: right;" />
         </div>
         <div class="form-head-right"></div>
       </div>
@@ -102,7 +102,7 @@
           </tbody>
         </table>
         <p>
-        <span *ngIf= "items.controls['itemId'].invalid && toggle==true">Please select an option</span>
+        <span *ngIf= "itemError">Please select an option</span>
         </p>
       </form>
       <div class="button-div">

@@ -16,6 +16,7 @@ export class AllVendorsComponent implements OnInit {
   ngOnInit() {
     this.saveData.allVendors()
     .subscribe((res: any)=>{
+      console.log(res)
       this.vendorData = res.data
       this.vendorIDS = Object.keys(res.data)
       console.log(this.vendorData)
